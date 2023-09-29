@@ -1,7 +1,5 @@
 package com.lobo.autentication.resource;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lobo.autentication.dto.FisicaDTO;
-import com.lobo.autentication.dto.assembler.FisicaAssember;
-import com.lobo.autentication.entity.Fisica;
-import com.lobo.autentication.entity.mapper.FisicaMapper;
-import com.lobo.autentication.service.FisicaService;
+import com.lobo.autentication.dto.CredentialDTO;
+import com.lobo.autentication.dto.assembler.CredentialAssember;
+import com.lobo.autentication.entity.Credential;
+import com.lobo.autentication.entity.mapper.CredentialMapper;
+import com.lobo.autentication.service.CredentialService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,44 +23,37 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-/**
- *
- * @author Prof. Dr. Frank J. Affonso
- */
+
 @RestController
-@RequestMapping("/entidade/v1")
-public class FisicaResource {
+@RequestMapping("/auth")
+public class CredentialResource {
 
     @Autowired
-    private FisicaService fisicaService;
+    private CredentialService credentialService;
 
-    @GetMapping("/")
-    public List<Fisica> getAllFisica() {
-        return fisicaService.findAll();
-    }
 
-    @Operation(summary = "Retorna uma pessoa pelo CPF", description = "Retorna algum dia")
+    @Operation(summary = "Faz o login do usuário", description = "Retorna id de acesso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pessoa-física encontrada!", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Fisica.class))
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Credential.class))
             }),
             @ApiResponse(responseCode = "400", description = "CPF inválido!", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pessoa-física não encontrada!", content = @Content)
     })
     @GetMapping("/cpf/")
-    public Fisica getFisicaByCpf(@RequestParam(value = "cpf") String cpf) {
-        Fisica fisica = fisicaService.findByCpf(cpf);
+    public Credential getCredentialByCpf(@RequestParam(value = "cpf") String cpf) {
+        Credential credential = credentialService.findByUserNameCredential(cpf);
 
-        return fisica;
+        return credential;
     }
 
     @DeleteMapping("/{cpf}")
     public boolean delete(@PathVariable(value = "cpf") String cpf) {
         boolean delete = false;
-        Fisica fisicaDelete = fisicaService.findByCpf(cpf);
+        Credential credentialDelete = credentialService.findByUserNameCredential(cpf);
 
-        if (fisicaDelete != null) {
-            fisicaService.delete(fisicaDelete);
+        if (credentialDelete != null) {
+            credentialService.delete(credentialDelete);
             delete = true;
         }
 
@@ -70,12 +61,12 @@ public class FisicaResource {
     }
 
     @PostMapping("/")
-    public boolean saveFisica(@RequestBody FisicaDTO fisicaDto) {
+    public boolean saveCredential(@RequestBody CredentialDTO credentialDto) {
         boolean insert = false;
 
-        Fisica fisica = FisicaAssember.dtoToEntityModel(fisicaDto);
-        Fisica fisicaInsert = fisicaService.save(fisica);
-        if (fisicaInsert != null) {
+        Credential credential = CredentialAssember.dtoToEntityModel(credentialDto);
+        Credential credentialInsert = credentialService.save(credential);
+        if (credentialInsert != null) {
             insert = true;
         }
 
@@ -83,16 +74,16 @@ public class FisicaResource {
     }
 
     @PutMapping("/")
-    public boolean update(@RequestBody FisicaDTO fisicaDto) {
+    public boolean update(@RequestBody CredentialDTO credentialDto) {
         boolean update = false;
 
-        Fisica newFisica = FisicaAssember.dtoToEntityModel(fisicaDto);
-        Fisica fisicaUpdate = fisicaService.findByCpf(newFisica.getCpf());
+        Credential newCredential = CredentialAssember.dtoToEntityModel(credentialDto);
+        Credential credentialUpdate = credentialService.findByUserNameCredential(newCredential.getUserName());
 
-        FisicaMapper.update(fisicaUpdate, newFisica);
+        CredentialMapper.update(credentialUpdate, newCredential);
 
-        Fisica fisicaUpdated = fisicaService.update(fisicaUpdate);
-        if (fisicaUpdated != null) {
+        Credential credentialUpdated = credentialService.update(credentialUpdate);
+        if (credentialUpdated != null) {
             update = true;
         }
 

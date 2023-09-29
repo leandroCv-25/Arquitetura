@@ -1,34 +1,32 @@
 package com.lobo.autentication.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
-@Entity(name = "Contato")
+@Entity(name = "Access")
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-public class Contato implements Serializable{
+public class Access implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idContato;
-    private String telefoneResidencial;
-    private String telefoneComercial;
-    private String celular;
-    private String email;
+    private long idEndereco;
 
-    public Contato() {
-    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
+
 }

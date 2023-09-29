@@ -1,4 +1,4 @@
-package com.arq.demo.service;
+package com.lobo.autentication.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,20 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arq.demo.entity.Fisica;
-import com.arq.demo.repository.FisicaRepository;
+import com.lobo.autentication.entity.Credential;
+import com.lobo.autentication.repository.CredentialRepository;
 
 @Component
-public class FisicaService {
+public class CredentialService {
 
      @Autowired
-    private FisicaRepository repository;
+    private CredentialRepository repository;
 
-    public FisicaService() {
+    public CredentialService() {
     }
 
-    public Fisica save(Fisica entity) {
-        Fisica persistedEntity = null;
+    public Credential save(Credential entity) {
+        Credential persistedEntity = null;
 
         if (repository != null) {
             persistedEntity = repository.save(entity);
@@ -28,26 +28,26 @@ public class FisicaService {
         return persistedEntity;
     }
 
-    public Fisica findByCpf(String cpf) {
-        Fisica insertedEntity = null;
+    public Credential findByUserNameCredential(String userName) {
+        Credential insertedEntity = null;
 
         if (repository != null) {
-            insertedEntity = repository.findByCpf(cpf);
+            insertedEntity = repository.findByUserNameCredential(userName);
         }
 
         return insertedEntity;
     }
 
-    public void delete(Fisica entity) {
+    public void delete(Credential entity) {
 
         if (repository != null) {
             repository.delete(entity);
         }
     }
 
-    public Fisica update(Fisica entity) {
+    public Credential update(Credential entity) {
 
-        Fisica persistedEntity = null;
+        Credential persistedEntity = null;
 
         if (repository != null) {
             persistedEntity = repository.save(entity);
@@ -56,8 +56,8 @@ public class FisicaService {
         return persistedEntity;
     }
 
-    public List<Fisica> findAll() {
-        List<Fisica> list = null;
+    public List<Credential> findAll() {
+        List<Credential> list = null;
 
         if (repository != null) {
             list = new ArrayList<>();

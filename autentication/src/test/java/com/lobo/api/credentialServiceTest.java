@@ -5,32 +5,31 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.lobo.autentication.entity.Fisica;
-import com.lobo.autentication.service.FisicaService;
+import com.lobo.autentication.entity.Credential;
+import com.lobo.autentication.service.CredentialService;
 import com.lobo.autentication.utils.InstanceGenerator;
 
 @SpringBootTest
-public class FisicaServiceTest {
-    
-    private Fisica entity;
+public class credentialServiceTest {
+
+    private Credential entity;
 
     @Autowired(required = true)
-    private FisicaService fs = new FisicaService();
-    
+    private CredentialService cs = new CredentialService();
+
     // @Disabled
     @Test
-    @DisplayName("FisicaService.save(Fisica)")
+    @DisplayName("CredentialService.save(Credential)")
     void testSave() {
-        entity = InstanceGenerator.getPessoaFisica("222.333.444-56", "user2");
+        entity = InstanceGenerator.getCredential("user2");
         System.out.println(entity);
 
-        Fisica f = fs.save(entity);
+        Credential f = cs.save(entity);
         System.out.println("----------------------------------------");
         System.out.println(f);
         System.out.println("----------------------------------------");
@@ -40,12 +39,12 @@ public class FisicaServiceTest {
 
     // @Disabled
     @Test
-    @DisplayName("FisicaService.findByCpf(cpf)")
+    @DisplayName("CredentialService.findByCpf(cpf)")
     void testFindByCpf() {
-        entity = InstanceGenerator.getPessoaFisica("222.333.444-55", "user1");
+        entity = InstanceGenerator.getCredential("user1");
 
-        String cpf = "222.333.444-55";
-        Fisica f = fs.findByCpf(cpf);
+        String cpf = "user1";
+        Credential f = cs.findByUserNameCredential(cpf);
         System.out.println("----------------------------------------");
         System.out.println(f);
         System.out.println("----------------------------------------");
@@ -56,31 +55,40 @@ public class FisicaServiceTest {
     // @Disabled
     @Test
     public void testDelete() {
-        entity = InstanceGenerator.getPessoaFisica("222.333.444-55", "user1");
-        
-        fs.delete(entity); 
+        entity = InstanceGenerator.getCredential("user1");
 
-        String cpf = "222.333.444-55";
-        Fisica d = fs.findByCpf(cpf);
+        cs.delete(entity);
 
-        assertNotEquals(entity,d);
-    }
+        String userName = "user1";
+        Credential d = cs.findByUserNameCredential(userName);
 
-    @Disabled
-    @Test
-    public void testUpdate() {
-        //...
+        assertNotEquals(entity, d);
     }
 
     // @Disabled
     @Test
-    @DisplayName("FisicaService.findAll()")
+    public void testUpdate() {
+        entity = InstanceGenerator.getCredential("user1");
+
+        entity.setPassword("user2");
+
+        cs.update(entity);
+
+        String userName = "user1";
+        Credential d = cs.findByUserNameCredential(userName);
+
+        assertEquals(entity, d);
+    }
+
+    // @Disabled
+    @Test
+    @DisplayName("CredentialService.findAll()")
     public void testFindAll() {
         System.out.println("findAll");
 
-        Fisica expResult = null;
-        List<Fisica> result = fs.findAll();
-        for (Fisica f : result){
+        Credential expResult = null;
+        List<Credential> result = cs.findAll();
+        for (Credential f : result) {
             System.out.println("FISICA: " + f);
         }
         assertNotEquals(expResult, result);
