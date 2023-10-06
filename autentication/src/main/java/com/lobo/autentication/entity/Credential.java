@@ -8,6 +8,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
@@ -25,14 +28,18 @@ public class Credential implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "credential_user", unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "userName", unique = true)
     private String userName;
 
-    @Column(name = "credential_password")
+    @Column(name = "password")
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "pessoa_idpessoa")
+    @JoinColumn(name = "credential_idCredential")
     private List<Access> access;
 
     public Credential() {

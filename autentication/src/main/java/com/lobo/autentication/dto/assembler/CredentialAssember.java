@@ -15,7 +15,7 @@ public class CredentialAssember {
     public static Credential dtoToEntityModel(CredentialDTO dto) {
         Credential credential = new Credential();
 
-        credential.setUserName(dto.getCpf());
+        credential.setUserName(dto.getUserName());
         credential.setPassword(dto.getPassword());
         Access access = new Access();
         access.setDate(Date.from(Instant.now()));

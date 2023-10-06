@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.lobo.autentication.entity.Credential;
 import com.lobo.autentication.repository.CredentialRepository;
 
+
 @Component
 public class CredentialService {
 
@@ -28,11 +29,11 @@ public class CredentialService {
         return persistedEntity;
     }
 
-    public Credential findByUserNameCredential(String userName) {
+    public Credential findByUserName(String userCredentialString) {
         Credential insertedEntity = null;
 
         if (repository != null) {
-            insertedEntity = repository.findByUserNameCredential(userName);
+            insertedEntity = repository.findByUserName(userCredentialString);
         }
 
         return insertedEntity;

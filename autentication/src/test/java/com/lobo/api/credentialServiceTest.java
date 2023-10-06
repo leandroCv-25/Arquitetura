@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.lobo.autentication.ApiApplication;
 import com.lobo.autentication.entity.Credential;
 import com.lobo.autentication.service.CredentialService;
 import com.lobo.autentication.utils.InstanceGenerator;
 
-@SpringBootTest
+
+@SpringBootTest(classes = ApiApplication.class)
 public class credentialServiceTest {
 
     private Credential entity;
@@ -26,7 +28,7 @@ public class credentialServiceTest {
     @Test
     @DisplayName("CredentialService.save(Credential)")
     void testSave() {
-        entity = InstanceGenerator.getCredential("user2");
+        entity = InstanceGenerator.getCredential("user1");
         System.out.println(entity);
 
         Credential f = cs.save(entity);
@@ -40,11 +42,11 @@ public class credentialServiceTest {
     // @Disabled
     @Test
     @DisplayName("CredentialService.findByCpf(cpf)")
-    void testFindByCpf() {
+    void testFindByUserName() {
         entity = InstanceGenerator.getCredential("user1");
 
         String cpf = "user1";
-        Credential f = cs.findByUserNameCredential(cpf);
+        Credential f = cs.findByUserName(cpf);
         System.out.println("----------------------------------------");
         System.out.println(f);
         System.out.println("----------------------------------------");
@@ -60,7 +62,7 @@ public class credentialServiceTest {
         cs.delete(entity);
 
         String userName = "user1";
-        Credential d = cs.findByUserNameCredential(userName);
+        Credential d = cs.findByUserName(userName);
 
         assertNotEquals(entity, d);
     }
@@ -75,7 +77,7 @@ public class credentialServiceTest {
         cs.update(entity);
 
         String userName = "user1";
-        Credential d = cs.findByUserNameCredential(userName);
+        Credential d = cs.findByUserName(userName);
 
         assertEquals(entity, d);
     }

@@ -5,12 +5,10 @@ import com.lobo.autentication.entity.Credential;
 import java.time.Instant;
 import java.util.Date;
 
+import com.lobo.autentication.dto.CredentialDTO;
 import com.lobo.autentication.entity.Access;
 
-/**
- *
- * @author Prof. Dr. Frank J. Affonso
- */
+
 public class InstanceGenerator {
 
     private InstanceGenerator() {
@@ -22,6 +20,15 @@ public class InstanceGenerator {
 
         c.setUserName(user);
         c.setPassword(user);
+
+        return c;
+    }
+
+    public static CredentialDTO getCredentialDto(String userName) {
+        CredentialDTO c = new CredentialDTO();
+
+        c.setUserName(userName);
+        c.setPassword(userName);
 
         return c;
     }

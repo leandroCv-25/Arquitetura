@@ -1,0 +1,9 @@
+# sintax= docker/dockerfile:1
+
+FROM mysql:8.1
+
+ENV MYSQL_ROOT_PASSWORD 123456
+ENV MYSQL_ALLOW_EMPTY_PASSWORD false
+ENV MYSQL_USER imobiliaria
+ENV MYSQL_PASSWORD 123456
+ENV MYSQL_DATABASE imobiliaria_contacts

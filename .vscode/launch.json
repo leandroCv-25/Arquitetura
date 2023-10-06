@@ -9,6 +9,16 @@
             "projectName": "api",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SessionApplication<session>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.lobo.session.SessionApplication",
+            "projectName": "session",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

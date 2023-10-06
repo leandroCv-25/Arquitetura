@@ -1,3 +1,3 @@
-docker build -t mysqlserver -f db\mysql\dockerfile .
+docker build -t mysqlserver -f db\dockerfile .
 
 docker run -d --rm -v mysql_data:/var/lib/mysql -v mysql_config:/etc/mysql/config.d -p 3307:3306  --name mysqlserver mysqlserver
