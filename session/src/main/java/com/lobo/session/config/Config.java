@@ -31,6 +31,7 @@ public class Config {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.addAllowedOrigin("http://127.0.0.1:8084");
         source.registerCorsConfiguration("/**", corsConfiguration);
 
         return source;

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.lobo.autentication.ApiApplication;
 import com.lobo.autentication.dto.CredentialDTO;
+import com.lobo.autentication.dto.ResponseDTO;
 import com.lobo.autentication.resource.CredentialResource;
 import com.lobo.autentication.utils.InstanceGenerator;
 
@@ -29,12 +30,12 @@ public class credentialResourceTest {
         entity = InstanceGenerator.getCredentialDto("user5");
         System.out.println(entity);
 
-        ResponseEntity<Boolean> f = cr.signIn(entity);
+        ResponseEntity<ResponseDTO> f = cr.signIn(entity);
         System.out.println("----------------------------------------");
-        System.out.println(f.getBody());
+        System.out.println(f.getBody().isSucess());
         System.out.println("----------------------------------------");
 
-        assertEquals(true, f.getBody());
+        assertEquals(true, f.getBody().isSucess());
     }
 
     @Test
@@ -43,12 +44,12 @@ public class credentialResourceTest {
         entity = InstanceGenerator.getCredentialDto("user5");
         System.out.println(entity);
 
-        ResponseEntity<Boolean> f = cr.signIn(entity);
+        ResponseEntity<ResponseDTO> f = cr.signIn(entity);
         System.out.println("----------------------------------------");
-        System.out.println(f.getBody());
+        System.out.println(f.getBody().isSucess());
         System.out.println("----------------------------------------");
 
-        assertEquals(true, f.getBody());
+        assertEquals(true, f.getBody().isSucess());
     }
 
     

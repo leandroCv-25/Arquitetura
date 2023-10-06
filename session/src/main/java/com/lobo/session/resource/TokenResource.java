@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lobo.session.dto.ResponseDTO;
 import com.lobo.session.entity.Token;
 import com.lobo.session.service.TokenService;
 import com.lobo.session.utils.JwtTokenUtil;
@@ -21,13 +22,23 @@ public class TokenResource {
     private JwtTokenUtil JwtTokenUtil;
 
     @PostMapping("/signout")
-    public ResponseEntity<Boolean> logout(@RequestParam(value = "key") long key) {
-        tokenService.delete(key);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "key") Long key) {
+        ResponseDTO response = new ResponseDTO();
+        if (key != null) {
+            tokenService.delete(key);
+            response.setMsg("Saiu do sistema");
+            response.setSucess(true);
+            return ResponseEntity.ok(response);
+        } else {
+            response.setMsg("Erro no formato da requisição");
+            response.setSucess(false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> check(@RequestParam(value = "key") Long key) {
+    public ResponseEntity<ResponseDTO> check(@RequestParam(value = "key") Long key) {
+        ResponseDTO response = new ResponseDTO();
         if (key != null) {
             Token token = tokenService.findByKey(key);
 
@@ -37,22 +48,39 @@ public class TokenResource {
                 if (isValid) {
                     token.setJwtToken(JwtTokenUtil.generateToken(key));
                     tokenService.save(key, token);
+                    response.setSucess(true);
+                } else {
+                    response.setMsg("Sessão Expirada");
+                    response.setSucess(false);
                 }
-                return ResponseEntity.ok(isValid);
+                return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.ok(false);
+                response.setMsg("Saiu do sistema");
+                response.setSucess(false);
+                return ResponseEntity.ok(response);
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+            response.setMsg("Erro no formato da requisição");
+            response.setSucess(false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<Boolean> auth(@RequestParam(value = "key") long key) {
-        Token token = new Token();
-        token.setJwtToken(JwtTokenUtil.generateToken(key));
-        tokenService.save(key, token);
-        return ResponseEntity.ok(true);
+    public ResponseEntity<ResponseDTO> auth(@RequestParam(value = "key") Long key) {
+        ResponseDTO response = new ResponseDTO();
+        if (key != null) {
+            Token token = new Token();
+            token.setJwtToken(JwtTokenUtil.generateToken(key));
+            tokenService.save(key, token);
+            response.setSucess(true);
+            response.setKey(key);
+            return ResponseEntity.ok(response);
+        } else{
+            response.setMsg("Erro no formato da requisição");
+            response.setSucess(false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
 }
