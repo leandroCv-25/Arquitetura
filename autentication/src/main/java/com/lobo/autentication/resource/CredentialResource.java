@@ -83,7 +83,7 @@ public class CredentialResource {
 
     }
 
-    @Operation(summary = "Faz o login do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
+    @Operation(summary = "Faz o cadrastro do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Realizando o processo de criação de acesso.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
