@@ -1,5 +1,0 @@
-docker build -t contactsdbserver -f db\dockerfile .
-docker volume create contacts_config
-docker volume create contacts_data
-
-docker run -d --rm -v contacts_data:/var/lib/mysql -v contacts_config:/etc/mysql/config.d -p 3306:3306  --name contactsserver contactsdbserver

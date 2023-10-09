@@ -14,13 +14,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class Config {
-
+    
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers(HttpMethod.POST, "/signout").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/signout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/check").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui-entity.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

@@ -33,13 +33,12 @@ public class CredentialResource {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Operation(summary = "Faz o login do usuário", description = "Retorna id de acesso")
+    @Operation(summary = "Faz o login do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Credencial válidas!", content = {
+            @ApiResponse(responseCode = "200", description = "Realizando o processo de autenticação.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
             }),
             @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Credenciais inválidas!", content = @Content)
     })
     @PostMapping("/signin")
     public ResponseEntity<ResponseDTO> signIn(@RequestBody CredentialDTO credentialDTO) {
@@ -84,6 +83,13 @@ public class CredentialResource {
 
     }
 
+    @Operation(summary = "Faz o login do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Realizando o processo de criação de acesso.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
+    })
     @PostMapping("/signup")
     public ResponseEntity<ResponseDTO> signUp(@RequestBody CredentialDTO credentialDTO) {
         ResponseDTO response = new ResponseDTO();
@@ -126,23 +132,4 @@ public class CredentialResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-
-    // @PutMapping("/")
-    // public boolean update(@RequestBody CredentialDTO credentialDto) {
-    // boolean update = false;
-
-    // Credential newCredential =
-    // CredentialAssember.dtoToEntityModel(credentialDto);
-    // Credential credentialUpdate =
-    // credentialService.findByUserName(newCredential.getUserName());
-
-    // CredentialMapper.update(credentialUpdate, newCredential);
-
-    // Credential credentialUpdated = credentialService.update(credentialUpdate);
-    // if (credentialUpdated != null) {
-    // update = true;
-    // }
-
-    // return update;
-    // }
 }

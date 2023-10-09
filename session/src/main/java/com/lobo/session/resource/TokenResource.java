@@ -13,6 +13,12 @@ import com.lobo.session.entity.Token;
 import com.lobo.session.service.TokenService;
 import com.lobo.session.utils.JwtTokenUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 public class TokenResource {
 
@@ -21,6 +27,13 @@ public class TokenResource {
     @Autowired
     private JwtTokenUtil JwtTokenUtil;
 
+    @Operation(summary = "Faz o logout do usuário", description = "Retorna resposta com o resultado em boolean e mensagem")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Realizando o logout do usuario.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
+    })
     @PostMapping("/signout")
     public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "key") Long key) {
         ResponseDTO response = new ResponseDTO();
@@ -36,6 +49,13 @@ public class TokenResource {
         }
     }
 
+    @Operation(summary = "Avalia se a sessão ainda é valída do usuário", description = "Retorna resposta com o resultado em boolean e mensagem")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Realizando a validação do usuario.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
+    })
     @GetMapping("/check")
     public ResponseEntity<ResponseDTO> check(@RequestParam(value = "key") Long key) {
         ResponseDTO response = new ResponseDTO();
@@ -66,6 +86,13 @@ public class TokenResource {
         }
     }
 
+    @Operation(summary = "Armazena a sessão do usuário", description = "Retorna resposta com o resultado em boolean e mensagem")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Armazenando a sessão do usuario.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
+    })
     @PostMapping("/auth")
     public ResponseEntity<ResponseDTO> auth(@RequestParam(value = "key") Long key) {
         ResponseDTO response = new ResponseDTO();
@@ -76,7 +103,7 @@ public class TokenResource {
             response.setSucess(true);
             response.setKey(key);
             return ResponseEntity.ok(response);
-        } else{
+        } else {
             response.setMsg("Erro no formato da requisição");
             response.setSucess(false);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
