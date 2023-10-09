@@ -1,3 +1,7 @@
 docker build -t mysqlserver -f db\dockerfile .
 
+docker build -t contactsdbserver -f db\dockerfile .
+docker volume create mysql_config
+docker volume create mysql_data
+
 docker run -d --rm -v mysql_data:/var/lib/mysql -v mysql_config:/etc/mysql/config.d -p 3307:3306  --name mysqlserver mysqlserver
