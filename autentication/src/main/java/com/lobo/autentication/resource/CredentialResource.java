@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import com.lobo.autentication.dto.ResponseDTO;
 import com.lobo.autentication.dto.assembler.CredentialAssember;
 import com.lobo.autentication.entity.Credential;
 import com.lobo.autentication.service.CredentialService;
+import com.lobo.autentication.service.ResponseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,9 +29,10 @@ public class CredentialResource {
     @Autowired
     private CredentialService credentialService;
     @Autowired
-    private PasswordEncoder encoder;
+    private ResponseService responseService;
     @Autowired
-    private RestTemplate restTemplate;
+    private PasswordEncoder encoder;
+   
 
     @Operation(summary = "Faz o login do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
     @ApiResponses(value = {
@@ -51,8 +52,7 @@ public class CredentialResource {
             if (user != null) {
 
                 if (encoder.matches(credential.getPassword(), user.getPassword())) {
-                    ResponseDTO restResponseDTO = restTemplate.postForObject(
-                            "http://127.0.0.1:8080/auth?key="+user.getId(),null, ResponseDTO.class);
+                    ResponseDTO restResponseDTO = responseService.auth(user.getId());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
@@ -103,8 +103,7 @@ public class CredentialResource {
                 Credential credentialInsert = credentialService.save(credential);
                 if (credentialInsert != null) {
 
-                    ResponseDTO restResponseDTO = restTemplate.postForObject(
-                            "http://localhost:8080/auth?key="+credentialInsert.getId(),null, ResponseDTO.class);
+                    ResponseDTO restResponseDTO = responseService.auth(credentialInsert.getId());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
