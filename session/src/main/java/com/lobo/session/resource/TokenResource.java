@@ -35,10 +35,10 @@ public class TokenResource {
             @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
     })
     @PostMapping("/signout")
-    public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "key") Long key) {
+    public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "sessionKey") Long sessionKey) {
         ResponseDTO response = new ResponseDTO();
-        if (key != null) {
-            tokenService.delete(key);
+        if (sessionKey != null) {
+            tokenService.delete(sessionKey);
             response.setMsg("Saiu do sistema");
             response.setSucess(true);
             return ResponseEntity.ok(response);

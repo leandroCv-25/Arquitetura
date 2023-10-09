@@ -23,7 +23,7 @@ public class Access implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idEndereco;
+    private long idAccess;
 
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -13,6 +13,7 @@ import com.lobo.autentication.dto.CredentialDTO;
 import com.lobo.autentication.dto.ResponseDTO;
 import com.lobo.autentication.dto.assembler.CredentialAssember;
 import com.lobo.autentication.entity.Credential;
+import com.lobo.autentication.entity.mapper.CredentialMapper;
 import com.lobo.autentication.service.CredentialService;
 import com.lobo.autentication.service.ResponseService;
 
@@ -32,7 +33,6 @@ public class CredentialResource {
     private ResponseService responseService;
     @Autowired
     private PasswordEncoder encoder;
-   
 
     @Operation(summary = "Faz o login do usuário", description = "Retorna resposta com id de acesso caso for um sucesso")
     @ApiResponses(value = {
@@ -52,7 +52,11 @@ public class CredentialResource {
             if (user != null) {
 
                 if (encoder.matches(credential.getPassword(), user.getPassword())) {
-                    ResponseDTO restResponseDTO = responseService.auth(user.getId());
+
+                    CredentialMapper.update(user, credential);
+
+                    ResponseDTO restResponseDTO = responseService
+                            .auth(user.getAccess().get(user.getAccess().size() - 1).getIdAccess());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
@@ -103,7 +107,9 @@ public class CredentialResource {
                 Credential credentialInsert = credentialService.save(credential);
                 if (credentialInsert != null) {
 
-                    ResponseDTO restResponseDTO = responseService.auth(credentialInsert.getId());
+                    ResponseDTO restResponseDTO = responseService
+                            .auth(credentialInsert.getAccess().get(credentialInsert.getAccess().size() - 1)
+                                    .getIdAccess());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
