@@ -67,8 +67,8 @@ public class TokenResource {
 
                 if (isValid) {
 
-                    long id = JwtTokenUtil.getIdFromToken(token.getJwtToken());
-                    token.setJwtToken(JwtTokenUtil.generateToken(sessionId,id));
+                    long id = token.getId();
+                    token.setJwtToken(JwtTokenUtil.generateToken(sessionId));
                     tokenService.save(sessionId, token);
                     response.setSucess(true);
                     response.setId(id);
@@ -102,7 +102,8 @@ public class TokenResource {
         ResponseDTO response = new ResponseDTO();
         if (sessionId != null || userId != null) {
             Token token = new Token();
-            token.setJwtToken(JwtTokenUtil.generateToken(sessionId,userId));
+            token.setId(userId);
+            token.setJwtToken(JwtTokenUtil.generateToken(sessionId));
             tokenService.save(sessionId, token);
             response.setSucess(true);
             response.setKey(sessionId);

@@ -9,8 +9,6 @@ public class CredentialMapper {
 
     public static void update(Credential credentialUpdate, Credential newCredential) {
 
-        credentialUpdate.setPassword(newCredential.getPassword());
-
         for (Access ac : newCredential.getAccess()) {
            credentialUpdate.setAccess(ac);
         }

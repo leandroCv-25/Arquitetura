@@ -54,6 +54,8 @@ public class CredentialResource {
                 if (encoder.matches(credential.getPassword(), user.getPassword())) {
 
                     CredentialMapper.update(user, credential);
+                    
+                    credentialService.update(user);
 
                     ResponseDTO restResponseDTO = responseService
                             .auth(user.getAccess().get(user.getAccess().size() - 1).getIdAccess(),user.getId());
@@ -61,7 +63,7 @@ public class CredentialResource {
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
                         response.setSucess(true);
-                        response.setKey(user.getId());
+                        response.setKey(restResponseDTO.getKey());
                     } else {
                         response.setMsg("Erro nosso, espere um momento");
                         response.setSucess(false);
