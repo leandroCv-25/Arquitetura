@@ -35,10 +35,10 @@ public class TokenResource {
             @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
     })
     @PostMapping("/signout")
-    public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "sessionKey") Long sessionKey) {
+    public ResponseEntity<ResponseDTO> logout(@RequestParam(value = "sessionId") Long sessionId) {
         ResponseDTO response = new ResponseDTO();
-        if (sessionKey != null) {
-            tokenService.delete(sessionKey);
+        if (sessionId != null) {
+            tokenService.delete(sessionId);
             response.setMsg("Saiu do sistema");
             response.setSucess(true);
             return ResponseEntity.ok(response);
@@ -57,18 +57,21 @@ public class TokenResource {
             @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
     })
     @GetMapping("/check")
-    public ResponseEntity<ResponseDTO> check(@RequestParam(value = "key") Long key) {
+    public ResponseEntity<ResponseDTO> check(@RequestParam(value = "sessionId") Long sessionId) {
         ResponseDTO response = new ResponseDTO();
-        if (key != null) {
-            Token token = tokenService.findByKey(key);
+        if (sessionId != null) {
+            Token token = tokenService.findByKey(sessionId);
 
             if (token != null) {
-                Boolean isValid = JwtTokenUtil.validateToken(token.getJwtToken(), key);
+                Boolean isValid = JwtTokenUtil.validateToken(token.getJwtToken(), sessionId);
 
                 if (isValid) {
-                    token.setJwtToken(JwtTokenUtil.generateToken(key));
-                    tokenService.save(key, token);
+
+                    long id = JwtTokenUtil.getIdFromToken(token.getJwtToken());
+                    token.setJwtToken(JwtTokenUtil.generateToken(sessionId,id));
+                    tokenService.save(sessionId, token);
                     response.setSucess(true);
+                    response.setId(id);
                 } else {
                     response.setMsg("Sessão Expirada");
                     response.setSucess(false);
@@ -94,14 +97,15 @@ public class TokenResource {
             @ApiResponse(responseCode = "400", description = "Formato da requisição inválida!", content = @Content),
     })
     @PostMapping("/auth")
-    public ResponseEntity<ResponseDTO> auth(@RequestParam(value = "key") Long key) {
+    public ResponseEntity<ResponseDTO> auth(@RequestParam(value = "sessionId") Long sessionId,
+            @RequestParam(value = "userId") Long userId) {
         ResponseDTO response = new ResponseDTO();
-        if (key != null) {
+        if (sessionId != null || userId != null) {
             Token token = new Token();
-            token.setJwtToken(JwtTokenUtil.generateToken(key));
-            tokenService.save(key, token);
+            token.setJwtToken(JwtTokenUtil.generateToken(sessionId,userId));
+            tokenService.save(sessionId, token);
             response.setSucess(true);
-            response.setKey(key);
+            response.setKey(sessionId);
             return ResponseEntity.ok(response);
         } else {
             response.setMsg("Erro no formato da requisição");

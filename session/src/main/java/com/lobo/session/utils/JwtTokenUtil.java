@@ -31,6 +31,10 @@ public class JwtTokenUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public long getIdFromToken(String token) {
+        return (long) getAllClaimsFromToken(token).get("id");
+    }
+
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
@@ -50,8 +54,9 @@ public class JwtTokenUtil {
     }
 
     // gera token para user
-    public String generateToken(Long key) {
+    public String generateToken(Long key,long id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
         return doGenerateToken(claims, Long.toString(key));
     }
 

@@ -56,7 +56,7 @@ public class CredentialResource {
                     CredentialMapper.update(user, credential);
 
                     ResponseDTO restResponseDTO = responseService
-                            .auth(user.getAccess().get(user.getAccess().size() - 1).getIdAccess());
+                            .auth(user.getAccess().get(user.getAccess().size() - 1).getIdAccess(),user.getId());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
@@ -109,16 +109,16 @@ public class CredentialResource {
 
                     ResponseDTO restResponseDTO = responseService
                             .auth(credentialInsert.getAccess().get(credentialInsert.getAccess().size() - 1)
-                                    .getIdAccess());
+                                    .getIdAccess(),credentialInsert.getId());
 
                     if (restResponseDTO.isSucess()) {
                         response.setMsg("Logado no sistema");
                         response.setSucess(true);
-                        response.setKey(credentialInsert.getId());
+                        response.setKey(restResponseDTO.getKey());
                     } else {
                         response.setMsg("Credencial salva");
                         response.setSucess(false);
-                        response.setKey(credentialInsert.getId());
+                        response.setKey(restResponseDTO.getKey());
                     }
                     return ResponseEntity.ok(response);
                 } else {

@@ -13,13 +13,15 @@ public class ResponseDTO {
     private boolean sucess;
     private String msg;
     private long key;
+    private long id;
 
     public ResponseDTO() {
     }
 
-    public ResponseDTO(String msg, boolean sucess, long key) {
+    public ResponseDTO(String msg, boolean sucess, long key, long id) {
         this.msg = msg;
         this.sucess = sucess;
         this.key = key;
+        this.id = id;
     }
 }

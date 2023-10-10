@@ -1,7 +1,5 @@
 package com.lobo.autentication.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,18 +9,19 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseDTO {
     private boolean sucess;
     private String msg;
     private long key;
+    private long id;
 
     public ResponseDTO() {
     }
 
-    public ResponseDTO(String msg, boolean sucess, long key) {
+    public ResponseDTO(String msg, boolean sucess, long key, long id) {
         this.msg = msg;
         this.sucess = sucess;
         this.key = key;
+        this.id = id;
     }
 }
